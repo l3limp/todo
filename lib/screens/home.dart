@@ -85,29 +85,56 @@ class _HomeState extends State<Home> {
             ], begin: Alignment.topLeft, end: Alignment.bottomRight),
           ),
           child: ClipRRect(
-            borderRadius: BorderRadius.circular(15.0),
+            borderRadius: BorderRadius.circular(16.0),
             child: Container(
                 decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(15.0),
+                    borderRadius: BorderRadius.circular(16.0),
                     border: Border.all(
                         width: 1, color: Colors.white.withOpacity(0.4))),
                 child: Padding(
-                  padding: const EdgeInsets.fromLTRB(12.0, 20.0, 12.0, 20.0),
+                  padding: const EdgeInsets.only(bottom: 12),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Text(
-                        todo.title,
-                        textAlign: TextAlign.center,
-                        style: const TextStyle(
-                          fontSize: 22.0,
-                          color: Colors.white,
-                          letterSpacing: 1,
-                          fontWeight: FontWeight.bold,
+                      Container(
+                        // alignment: Alignment.centerRight,
+                        padding: const EdgeInsets.all(12),
+                        decoration: BoxDecoration(
+                            color: todo.status == 'In Progress'
+                                ? Colors.orange
+                                : todo.status == 'Done'
+                                    ? Colors.green
+                                    : Colors.redAccent,
+                            borderRadius: const BorderRadius.only(
+                                topLeft: Radius.circular(10),
+                                topRight: Radius.circular(10),
+                                bottomLeft: Radius.circular(6),
+                                bottomRight: Radius.circular(6))),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              todo.title.length > 20
+                                  ? '${todo.title.substring(0, 28)}...'
+                                  : todo.title,
+                              textAlign: TextAlign.center,
+                              style: const TextStyle(
+                                fontSize: 16.0,
+                                color: Colors.white,
+                                letterSpacing: 1,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            Text(
+                              todo.status,
+                              style: const TextStyle(color: Colors.white),
+                            ),
+                          ],
                         ),
                       ),
+                      const SizedBox(height: 12,),
                       Text(
                         todo.description,
                         textAlign: TextAlign.center,
@@ -115,19 +142,8 @@ class _HomeState extends State<Home> {
                           fontSize: 22.0,
                           color: Colors.white,
                           letterSpacing: 1,
-                          fontWeight: FontWeight.bold,
                         ),
                       ),
-                      Text(
-                        todo.status,
-                        textAlign: TextAlign.center,
-                        style: const TextStyle(
-                          fontSize: 22.0,
-                          color: Colors.white,
-                          letterSpacing: 1,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      )
                     ],
                   ),
                 )),

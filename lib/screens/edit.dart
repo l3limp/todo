@@ -21,10 +21,11 @@ class EditCard extends StatefulWidget {
 
 class _EditCardState extends State<EditCard> {
   OurTheme theme = OurTheme();
-  String status = "To Do";
+  late String status;
 
   late String title;
   late String description;
+  late List chips;
 
   // late CollectionReference books;
 
@@ -34,6 +35,8 @@ class _EditCardState extends State<EditCard> {
     // TODO: implement initState
     title = widget.lister[widget.index].title;
     description = widget.lister[widget.index].description;
+    status = widget.lister[widget.index].status;
+    chips = [status == 'To Do', status == 'In Progress', status == 'Done'];
   }
 
   @override
@@ -88,7 +91,75 @@ class _EditCardState extends State<EditCard> {
                         fontWeight: FontWeight.bold,
                         color: theme.secondaryColor),
                   ),
-                  buildStatusDropDown(),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      InkWell(
+                        onTap: () {
+                          setState(() {
+                            chips = [true, false, false];
+                            status = "To Do";
+                          });
+                        },
+                        child: Container(
+                          padding: const EdgeInsets.all(12),
+                          decoration: BoxDecoration(
+                              color: chips[0] ? Colors.redAccent : null,
+                              border: Border.all(
+                                  color: chips[0]
+                                      ? Colors.white
+                                      : Colors.redAccent),
+                              borderRadius: BorderRadius.circular(16)),
+                          child: const Text(
+                            "To Do",
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        ),
+                      ),
+                      InkWell(
+                        onTap: () {
+                          setState(() {
+                            chips = [false, true, false];
+                            status = "In Progress";
+                          });
+                        },
+                        child: Container(
+                          padding: const EdgeInsets.all(12),
+                          decoration: BoxDecoration(
+                              color: chips[1] ? Colors.orange : null,
+                              border: Border.all(
+                                  color:
+                                      chips[1] ? Colors.white : Colors.orange),
+                              borderRadius: BorderRadius.circular(16)),
+                          child: const Text(
+                            "In Progress",
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        ),
+                      ),
+                      InkWell(
+                        onTap: () {
+                          setState(() {
+                            chips = [false, false, true];
+                            status = "Done";
+                          });
+                        },
+                        child: Container(
+                          padding: const EdgeInsets.all(12),
+                          decoration: BoxDecoration(
+                              color: chips[2] ? Colors.green : null,
+                              border: Border.all(
+                                  color:
+                                      chips[2] ? Colors.white : Colors.green),
+                              borderRadius: BorderRadius.circular(16)),
+                          child: const Text(
+                            "Done",
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                   Row(
                     children: [
                       buildAddButton(),
@@ -104,46 +175,7 @@ class _EditCardState extends State<EditCard> {
     );
   }
 
-  Widget buildStatusDropDown() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        const Text(
-          "Status: ",
-          style: TextStyle(fontSize: 16, color: Colors.white),
-        ),
-        const SizedBox(
-          width: 5,
-        ),
-        DropdownButton<String>(
-          value: widget.lister[widget.index].status,
-          dropdownColor: theme.primaryColor,
-          icon: const Icon(Icons.arrow_downward),
-          iconSize: 20,
-          elevation: 16,
-          underline: Container(
-            height: 2,
-          ),
-          onChanged: (String? newValue) {
-            setState(() {
-              status = newValue!;
-            });
-          },
-          items: <String>['To Do', 'In Progress', 'Done']
-              .map<DropdownMenuItem<String>>((String value) {
-            return DropdownMenuItem<String>(
-              value: value,
-              child: Text(
-                value,
-                style: TextStyle(color: theme.tertiaryColor),
-              ),
-            );
-          }).toList(),
-        ),
-      ],
-    );
-  }
-
+  
   // Future<void> addCard(String sellerName, String sellerRoom,
   //     String sellerHostel, String sellerPhone, String contactPreference) {
   //   return books.add({
