@@ -5,25 +5,36 @@ import 'package:todo/model/todo.dart';
 
 import '../theme.dart';
 
-class AddCard extends StatefulWidget {
+class EditCard extends StatefulWidget {
   List<ToDo> lister;
+  int index;
 
-  AddCard({
+  EditCard({
     Key? key,
     required this.lister,
+    required this.index,
   }) : super(key: key);
 
   @override
-  _AddCardState createState() => _AddCardState();
+  _EditCardState createState() => _EditCardState();
 }
 
-class _AddCardState extends State<AddCard> {
+class _EditCardState extends State<EditCard> {
   OurTheme theme = OurTheme();
   String status = "To Do";
 
-  String title = "";
-  String description = "";
+  late String title;
+  late String description;
+
   // late CollectionReference books;
+
+  @override
+  void initState() {
+    super.initState();
+    // TODO: implement initState
+    title = widget.lister[widget.index].title;
+    description = widget.lister[widget.index].description;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -49,49 +60,47 @@ class _AddCardState extends State<AddCard> {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  buildTextFormField("Title", 'title', TextInputType.name),
-                  buildTextFormField(
-                      "Description", 'description', TextInputType.name),
+                  TextFormField(
+                    onChanged: (text) {
+                      title = text;
+                    },
+                    initialValue: widget.lister[widget.index].title,
+                    decoration: InputDecoration(
+                      border: const OutlineInputBorder(),
+                      labelText: "Title",
+                      labelStyle: TextStyle(color: theme.secondaryColor),
+                    ),
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: theme.secondaryColor),
+                  ),
+                  TextFormField(
+                    onChanged: (text) {
+                      description = text;
+                    },
+                    initialValue: widget.lister[widget.index].description,
+                    decoration: InputDecoration(
+                      border: const OutlineInputBorder(),
+                      labelText: "Description",
+                      labelStyle: TextStyle(color: theme.secondaryColor),
+                    ),
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: theme.secondaryColor),
+                  ),
                   buildStatusDropDown(),
-                  buildAddButton(),
+                  Row(
+                    children: [
+                      buildAddButton(),
+                      buildDeleteButton(),
+                    ],
+                  ),
                 ],
               ),
             ),
           ),
         ),
       ),
-    );
-  }
-
-  Widget buildTextFormField(
-      String label, String fillIn, TextInputType inputType) {
-    return TextFormField(
-      onChanged: (text) {
-        switch (fillIn) {
-          case 'title':
-            title = text;
-            break;
-          case 'description':
-            description = text;
-            break;
-          default:
-            print("idk");
-            break;
-        }
-      },
-      decoration: InputDecoration(
-        border: const OutlineInputBorder(),
-        labelText: label,
-        labelStyle: TextStyle(color: theme.secondaryColor),
-        enabledBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: theme.tertiaryColor)),
-        focusedBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: theme.tertiaryColor, width: 1.3)),
-      ),
-      cursorColor: theme.secondaryColor,
-      style:
-          TextStyle(fontWeight: FontWeight.bold, color: theme.secondaryColor),
-      keyboardType: inputType,
     );
   }
 
@@ -107,7 +116,7 @@ class _AddCardState extends State<AddCard> {
           width: 5,
         ),
         DropdownButton<String>(
-          value: status,
+          value: widget.lister[widget.index].status,
           dropdownColor: theme.primaryColor,
           icon: const Icon(Icons.arrow_downward),
           iconSize: 20,
@@ -160,8 +169,8 @@ class _AddCardState extends State<AddCard> {
     return Center(
       child: ElevatedButton(
         onPressed: () {
-          ToDo todo = ToDo(title, description, 0, status);
-          widget.lister.add(todo);
+          widget.lister[widget.index] =
+              ToDo(title, description, widget.index, status);
           Navigator.pop(context);
         },
         style: ElevatedButton.styleFrom(
@@ -178,6 +187,36 @@ class _AddCardState extends State<AddCard> {
             ),
             Text(
               "Add",
+              style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget buildDeleteButton() {
+    return Center(
+      child: ElevatedButton(
+        onPressed: () {
+          widget.lister.removeAt(widget.index);
+
+          Navigator.pop(context);
+        },
+        style: ElevatedButton.styleFrom(
+            backgroundColor: Colors.redAccent.withOpacity(0.8),
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(15),
+            )),
+        child: const Wrap(
+          children: [
+            Icon(Icons.sell),
+            SizedBox(
+              width: 10.0,
+            ),
+            Text(
+              "Delete",
               style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
             )
           ],
