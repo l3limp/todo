@@ -1,11 +1,10 @@
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:todo/model/todo.dart';
 import 'package:todo/screens/add.dart';
 import 'package:todo/screens/edit.dart';
-import 'package:todo/screens/login.dart';
+import 'package:todo/temp.dart';
 
 import '../theme.dart';
 
@@ -16,14 +15,32 @@ class Home extends StatefulWidget {
   State<Home> createState() => _HomeState();
 }
 
-ToDo todo = const ToDo("title", "description", 0, "status");
 List<ToDo> lister = [];
 
 class _HomeState extends State<Home> {
   OurTheme theme = OurTheme();
   late double height;
   late double width;
-  FirebaseAuth auth = FirebaseAuth.instance;
+  late CollectionReference todos;
+
+  @override
+  void initState() {
+    super.initState();
+    FirebaseFirestore.instance
+        .collection(auth.currentUser!.uid)
+        .get()
+        .then((value) => {
+              value.docs.forEach((item) {
+                lister.add(ToDo(
+                  item['title'],
+                  item['description'],
+                  item.id,
+                  item['status'],
+                ));
+              }),
+              setState(() {}),
+            });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -40,6 +57,7 @@ class _HomeState extends State<Home> {
                 onPressed: () {
                   auth.signOut();
                   GoogleSignIn().signOut();
+                  lister.clear();
                   Navigator.popAndPushNamed(
                     context,
                     '/login',
@@ -69,10 +87,8 @@ class _HomeState extends State<Home> {
             itemCount: lister.length,
             itemBuilder: (context, index) {
               ToDo todo = ToDo(lister[index].title, lister[index].description,
-                  index, lister[index].status);
-              return buildCard(
-                todo,
-              );
+                  lister[index].id, lister[index].status);
+              return buildCard(todo, index);
             },
           ),
         ),
@@ -80,7 +96,7 @@ class _HomeState extends State<Home> {
     );
   }
 
-  buildCard(ToDo todo) {
+  buildCard(ToDo todo, int index) {
     return InkWell(
       child: Center(
         child: Container(
@@ -175,7 +191,7 @@ class _HomeState extends State<Home> {
           MaterialPageRoute<void>(
             builder: (BuildContext context) => EditCard(
               lister: lister,
-              index: todo.index,
+              index: index,
             ),
           ),
         );

@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:todo/model/todo.dart';
+import 'package:todo/temp.dart';
 
 import '../theme.dart';
 
@@ -166,34 +166,29 @@ class _AddCardState extends State<AddCard> {
     );
   }
 
-  // Future<void> addCard(String sellerName, String sellerRoom,
-  //     String sellerHostel, String sellerPhone, String contactPreference) {
-  //   return books.add({
-  //     'title': title,
-  //     'author': description,
-  //     'department': status,
-  //     'seller_name': sellerName,
-  //     'seller_room': sellerRoom,
-  //     'seller_hostel': sellerHostel,
-  //     'seller_phone': sellerPhone,
-  //     'contact_preference': contactPreference,
-  //   }).then((value) {
-  //     const snackBar =
-  //         SnackBar(content: Text("Your listing was added successfully"));
-  //     ScaffoldMessenger.of(context).showSnackBar(snackBar);
-  //   }).catchError((error) {
-  //     final snackBar = SnackBar(content: Text("Failed to add book: $error"));
-  //     ScaffoldMessenger.of(context).showSnackBar(snackBar);
-  //   });
-  // }
+  Future<void> addTodo() {
+    return FirebaseFirestore.instance.collection(auth.currentUser!.uid).add({
+      'title': title,
+      'description': description,
+      'status': status,
+    }).then((value) {
+      const snackBar =
+          SnackBar(content: Text("Your Todo was added successfully"));
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      ToDo todo = ToDo(title, description, value.id, status);
+      widget.lister.add(todo);
+      Navigator.pop(context);
+    }).catchError((error) {
+      final snackBar = SnackBar(content: Text("Failed to add Todo: $error"));
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    });
+  }
 
   Widget buildAddButton() {
     return Center(
       child: ElevatedButton(
         onPressed: () {
-          ToDo todo = ToDo(title, description, 0, status);
-          widget.lister.add(todo);
-          Navigator.pop(context);
+          addTodo();
         },
         style: ElevatedButton.styleFrom(
             backgroundColor: theme.secondaryColor.withOpacity(0.8),

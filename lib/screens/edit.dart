@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:todo/model/todo.dart';
+import 'package:todo/temp.dart';
 
 import '../theme.dart';
 
@@ -22,7 +22,7 @@ class EditCard extends StatefulWidget {
 class _EditCardState extends State<EditCard> {
   OurTheme theme = OurTheme();
   late String status;
-
+  late String id;
   late String title;
   late String description;
   late List chips;
@@ -32,10 +32,10 @@ class _EditCardState extends State<EditCard> {
   @override
   void initState() {
     super.initState();
-    // TODO: implement initState
     title = widget.lister[widget.index].title;
     description = widget.lister[widget.index].description;
     status = widget.lister[widget.index].status;
+    id = widget.lister[widget.index].id;
     chips = [status == 'To Do', status == 'In Progress', status == 'Done'];
   }
 
@@ -175,35 +175,31 @@ class _EditCardState extends State<EditCard> {
     );
   }
 
-  
-  // Future<void> addCard(String sellerName, String sellerRoom,
-  //     String sellerHostel, String sellerPhone, String contactPreference) {
-  //   return books.add({
-  //     'title': title,
-  //     'author': description,
-  //     'department': status,
-  //     'seller_name': sellerName,
-  //     'seller_room': sellerRoom,
-  //     'seller_hostel': sellerHostel,
-  //     'seller_phone': sellerPhone,
-  //     'contact_preference': contactPreference,
-  //   }).then((value) {
-  //     const snackBar =
-  //         SnackBar(content: Text("Your listing was added successfully"));
-  //     ScaffoldMessenger.of(context).showSnackBar(snackBar);
-  //   }).catchError((error) {
-  //     final snackBar = SnackBar(content: Text("Failed to add book: $error"));
-  //     ScaffoldMessenger.of(context).showSnackBar(snackBar);
-  //   });
-  // }
+  Future<void> editTodo() {
+    return FirebaseFirestore.instance
+        .collection(auth.currentUser!.uid)
+        .doc(id)
+        .set({
+      'title': title,
+      'description': description,
+      'status': status,
+    }).then((value) {
+      const snackBar =
+          SnackBar(content: Text("Your Todo was edited successfully"));
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      widget.lister[widget.index] = ToDo(title, description, id, status);
+      Navigator.pop(context);
+    }).catchError((error) {
+      final snackBar = SnackBar(content: Text("Failed to edit Todo: $error"));
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    });
+  }
 
   Widget buildAddButton() {
     return Center(
       child: ElevatedButton(
         onPressed: () {
-          widget.lister[widget.index] =
-              ToDo(title, description, widget.index, status);
-          Navigator.pop(context);
+          editTodo();
         },
         style: ElevatedButton.styleFrom(
             backgroundColor: theme.secondaryColor.withOpacity(0.8),
@@ -227,13 +223,28 @@ class _EditCardState extends State<EditCard> {
     );
   }
 
+  Future<void> deleteTodo() {
+    return FirebaseFirestore.instance
+        .collection(auth.currentUser!.uid)
+        .doc(id)
+        .delete()
+        .then((value) {
+      const snackBar =
+          SnackBar(content: Text("Your Todo was deleted successfully"));
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      widget.lister.removeAt(widget.index);
+      Navigator.pop(context);
+    }).catchError((error) {
+      final snackBar = SnackBar(content: Text("Failed to delete Todo: $error"));
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    });
+  }
+
   Widget buildDeleteButton() {
     return Center(
       child: ElevatedButton(
         onPressed: () {
-          widget.lister.removeAt(widget.index);
-
-          Navigator.pop(context);
+          deleteTodo();
         },
         style: ElevatedButton.styleFrom(
             backgroundColor: Colors.redAccent.withOpacity(0.8),

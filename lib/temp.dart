@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:todo/screens/home.dart';
 import 'package:todo/screens/login.dart';
 
+var auth = FirebaseAuth.instance;
+
 class Initialisation extends StatelessWidget {
   const Initialisation({Key? key}) : super(key: key);
 
@@ -16,8 +18,7 @@ class Initialisation extends StatelessWidget {
           future: Firebase.initializeApp(),
           builder: (context, snapshot) {
             if (snapshot.hasData) {
-              var user = FirebaseAuth.instance.currentUser;
-              if (user == null) {
+              if (auth.currentUser == null) {
                 return const LogIn();
               } else {
                 return const Home();
