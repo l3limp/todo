@@ -22,6 +22,14 @@
           }
         },
         {
+          "client_id": "163324316327-lljos0bciu95143aao93iip9o7sht324.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.todo",
+            "certificate_hash": "28cb40dfb9661873ceaed886e3bc5027e5ba3361"
+          }
+        },
+        {
           "client_id": "163324316327-mnaaabd70o7gbiqnat6v8eoa3enripkc.apps.googleusercontent.com",
           "client_type": 3
         }

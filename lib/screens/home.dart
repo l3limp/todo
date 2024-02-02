@@ -1,7 +1,11 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:todo/model/todo.dart';
 import 'package:todo/screens/add.dart';
 import 'package:todo/screens/edit.dart';
+import 'package:todo/screens/login.dart';
 
 import '../theme.dart';
 
@@ -19,6 +23,7 @@ class _HomeState extends State<Home> {
   OurTheme theme = OurTheme();
   late double height;
   late double width;
+  FirebaseAuth auth = FirebaseAuth.instance;
 
   @override
   Widget build(BuildContext context) {
@@ -30,11 +35,23 @@ class _HomeState extends State<Home> {
         appBar: AppBar(
           title: const Text("Todo"),
           centerTitle: true,
+          actions: [
+            IconButton(
+                onPressed: () {
+                  auth.signOut();
+                  GoogleSignIn().signOut();
+                  Navigator.popAndPushNamed(
+                    context,
+                    '/login',
+                  );
+                },
+                icon: const Icon(Icons.logout_rounded))
+          ],
         ),
         floatingActionButton: FloatingActionButton(
             child: const Icon(Icons.add),
             onPressed: () async {
-              // Navigator.pushNamed(context, '/add');=
+              // print(auth.currentUser!.uid);
               await Navigator.push(
                 context,
                 MaterialPageRoute<void>(
@@ -134,7 +151,9 @@ class _HomeState extends State<Home> {
                           ],
                         ),
                       ),
-                      const SizedBox(height: 12,),
+                      const SizedBox(
+                        height: 12,
+                      ),
                       Text(
                         todo.description,
                         textAlign: TextAlign.center,

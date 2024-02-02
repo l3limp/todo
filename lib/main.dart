@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:todo/screens/add.dart';
+import 'package:todo/screens/home.dart';
+import 'package:todo/screens/login.dart';
 import './temp.dart';
 
 void main() {
@@ -15,7 +17,8 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       routes: {
         '/': (context) => const Initialisation(),
-        '/add': (context) => AddCard(lister: const[]),
+        '/home':(context) =>const  Home(),
+        '/login':(context) => const LogIn(),
       },
     );
   }
