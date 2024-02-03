@@ -131,7 +131,7 @@ class _AddCardState extends State<AddCard> {
   }
 
   Widget buildTextFormField(
-      String label, String fillIn, TextInputType inputType) {
+     final String label, String fillIn, TextInputType inputType) {
     return TextFormField(
       onChanged: (text) {
         switch (fillIn) {
@@ -147,13 +147,17 @@ class _AddCardState extends State<AddCard> {
         }
       },
       maxLines: fillIn == 'description' ? 10 : null,
-      decoration: InputDecoration(
-        alignLabelWithHint: true,
-        border: const OutlineInputBorder(),
+       cursorColor: Colors.white,
+                    decoration:  InputDecoration(
+                      alignLabelWithHint: true,
+                      border: const OutlineInputBorder(),
+                      enabledBorder: const OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.white)),
+                      focusedBorder: const OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.white)),
         labelText: label,
         labelStyle: TextStyle(color: theme.secondaryColor),
       ),
-      cursorColor: theme.secondaryColor,
       style:
           TextStyle(fontWeight: FontWeight.bold, color: theme.secondaryColor),
       keyboardType: inputType,
@@ -194,13 +198,15 @@ class _AddCardState extends State<AddCard> {
             )),
         child: const Wrap(
           children: [
-            Icon(Icons.sell),
+            Icon(Icons.sell,
+                  color: Colors.white),
             SizedBox(
               width: 10.0,
             ),
             Text(
               "Add",
-              style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold,
+                  color: Colors.white),
             )
           ],
         ),

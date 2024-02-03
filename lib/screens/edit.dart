@@ -69,14 +69,18 @@ class _EditCardState extends State<EditCard> {
                       title = text;
                     },
                     initialValue: widget.lister[widget.index].title,
-                    decoration: InputDecoration(
-                      border: const OutlineInputBorder(),
+                    decoration: const InputDecoration(
+                      border: OutlineInputBorder(),
+                      enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.white)),
+                      focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.white)),
+                      labelStyle: TextStyle(color: Colors.white),
                       labelText: "Title",
-                      labelStyle: TextStyle(color: theme.secondaryColor),
                     ),
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: theme.secondaryColor),
+                    cursorColor: Colors.white,
+                    style: const TextStyle(
+                        fontWeight: FontWeight.bold, color: Colors.white),
                   ),
                   TextFormField(
                     onChanged: (text) {
@@ -84,15 +88,19 @@ class _EditCardState extends State<EditCard> {
                     },
                     maxLines: 10,
                     initialValue: widget.lister[widget.index].description,
-                    decoration: InputDecoration(
+                    cursorColor: Colors.white,
+                    decoration: const InputDecoration(
                       alignLabelWithHint: true,
-                      border: const OutlineInputBorder(),
+                      border: OutlineInputBorder(),
+                      enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.white)),
+                      focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.white)),
                       labelText: "Description",
-                      labelStyle: TextStyle(color: theme.secondaryColor),
+                      labelStyle: TextStyle(color: Colors.white),
                     ),
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: theme.secondaryColor),
+                    style: const TextStyle(
+                        fontWeight: FontWeight.bold, color: Colors.white),
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -164,7 +172,7 @@ class _EditCardState extends State<EditCard> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      buildAddButton(),
+                      buildEditButton(),
                       buildDeleteButton(),
                     ],
                   ),
@@ -187,8 +195,8 @@ class _EditCardState extends State<EditCard> {
       'status': status,
     }).then((value) {
       const snackBar = SnackBar(
-          content:  Text("Your Todo was edited successfully"),
-          duration:  Duration(seconds: 1));
+          content: Text("Your Todo was edited successfully"),
+          duration: Duration(seconds: 1));
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
       widget.lister[widget.index] = ToDo(title, description, id, status);
       Navigator.pop(context);
@@ -198,27 +206,30 @@ class _EditCardState extends State<EditCard> {
     });
   }
 
-  Widget buildAddButton() {
+  Widget buildEditButton() {
     return Center(
       child: ElevatedButton(
         onPressed: () {
           editTodo();
         },
         style: ElevatedButton.styleFrom(
-            backgroundColor: theme.secondaryColor.withOpacity(0.8),
+            backgroundColor: theme.secondaryColor,
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(15),
             )),
         child: const Wrap(
           children: [
-            Icon(Icons.edit),
+            Icon(Icons.edit, color: Colors.white),
             SizedBox(
               width: 10.0,
             ),
             Text(
               "Edit",
-              style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
+              style: TextStyle(
+                  fontSize: 18.0,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white),
             )
           ],
         ),
@@ -233,7 +244,7 @@ class _EditCardState extends State<EditCard> {
         .delete()
         .then((value) {
       const snackBar = SnackBar(
-        content:  Text("Your Todo was deleted successfully"),
+        content: Text("Your Todo was deleted successfully"),
         duration: Duration(seconds: 1),
       );
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
@@ -254,20 +265,23 @@ class _EditCardState extends State<EditCard> {
           deleteTodo();
         },
         style: ElevatedButton.styleFrom(
-            backgroundColor: theme.todo.withOpacity(0.8),
+            backgroundColor: theme.todo,
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(15),
             )),
         child: const Wrap(
           children: [
-            Icon(Icons.delete),
+            Icon(Icons.delete, color: Colors.white),
             SizedBox(
               width: 10.0,
             ),
             Text(
               "Delete",
-              style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
+              style: TextStyle(
+                  fontSize: 18.0,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white),
             )
           ],
         ),
