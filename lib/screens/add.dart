@@ -166,8 +166,10 @@ class _AddCardState extends State<AddCard> {
       'description': description,
       'status': status,
     }).then((value) {
-      const snackBar =
-          SnackBar(content: Text("Your Todo was added successfully"));
+      const snackBar = SnackBar(
+        content: Text("Your Todo was added successfully"),
+        duration: Duration(seconds: 1),
+      );
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
       ToDo todo = ToDo(title, description, value.id, status);
       widget.lister.add(todo);

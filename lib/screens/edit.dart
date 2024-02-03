@@ -186,8 +186,9 @@ class _EditCardState extends State<EditCard> {
       'description': description,
       'status': status,
     }).then((value) {
-      const snackBar =
-          SnackBar(content: Text("Your Todo was edited successfully"));
+      const snackBar = SnackBar(
+          content:  Text("Your Todo was edited successfully"),
+          duration:  Duration(seconds: 1));
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
       widget.lister[widget.index] = ToDo(title, description, id, status);
       Navigator.pop(context);
@@ -231,13 +232,17 @@ class _EditCardState extends State<EditCard> {
         .doc(id)
         .delete()
         .then((value) {
-      const snackBar =
-          SnackBar(content: Text("Your Todo was deleted successfully"));
+      const snackBar = SnackBar(
+        content:  Text("Your Todo was deleted successfully"),
+        duration: Duration(seconds: 1),
+      );
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
       widget.lister.removeAt(widget.index);
       Navigator.pop(context);
     }).catchError((error) {
-      final snackBar = SnackBar(content: Text("Failed to delete Todo: $error"));
+      final snackBar = SnackBar(
+        content: Text("Failed to delete Todo: $error"),
+      );
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
     });
   }
