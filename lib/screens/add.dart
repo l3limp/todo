@@ -23,10 +23,7 @@ class _AddCardState extends State<AddCard> {
 
   String title = "";
   String description = "";
-  // late CollectionReference books;
   List chips = [true, false, false];
-  List cols = [Colors.redAccent, Colors.yellowAccent, Colors.greenAccent];
-  List opts = ["To Do", "In Progress", "Done"];
 
   @override
   Widget build(BuildContext context) {
@@ -35,6 +32,7 @@ class _AddCardState extends State<AddCard> {
       child: Scaffold(
         backgroundColor: theme.primaryColor,
         appBar: AppBar(
+          foregroundColor: theme.secondaryColor,
           backgroundColor: theme.primaryColor,
           centerTitle: true,
           title: Text(
@@ -68,11 +66,9 @@ class _AddCardState extends State<AddCard> {
                         child: Container(
                           padding: const EdgeInsets.all(12),
                           decoration: BoxDecoration(
-                              color: chips[0] ? Colors.redAccent : null,
+                              color: chips[0] ? theme.todo : null,
                               border: Border.all(
-                                  color: chips[0]
-                                      ? Colors.white
-                                      : Colors.redAccent),
+                                  color: chips[0] ? Colors.white : theme.todo),
                               borderRadius: BorderRadius.circular(16)),
                           child: const Text(
                             "To Do",
@@ -90,10 +86,11 @@ class _AddCardState extends State<AddCard> {
                         child: Container(
                           padding: const EdgeInsets.all(12),
                           decoration: BoxDecoration(
-                              color: chips[1] ? Colors.orange : null,
+                              color: chips[1] ? theme.inProgress : null,
                               border: Border.all(
-                                  color:
-                                      chips[1] ? Colors.white : Colors.orange),
+                                  color: chips[1]
+                                      ? Colors.white
+                                      : theme.inProgress),
                               borderRadius: BorderRadius.circular(16)),
                           child: const Text(
                             "In Progress",
@@ -111,10 +108,9 @@ class _AddCardState extends State<AddCard> {
                         child: Container(
                           padding: const EdgeInsets.all(12),
                           decoration: BoxDecoration(
-                              color: chips[2] ? Colors.green : null,
+                              color: chips[2] ? theme.done : null,
                               border: Border.all(
-                                  color:
-                                      chips[2] ? Colors.white : Colors.green),
+                                  color: chips[2] ? Colors.white : theme.done),
                               borderRadius: BorderRadius.circular(16)),
                           child: const Text(
                             "Done",
@@ -150,14 +146,12 @@ class _AddCardState extends State<AddCard> {
             break;
         }
       },
+      maxLines: fillIn == 'description' ? 10 : null,
       decoration: InputDecoration(
+        alignLabelWithHint: true,
         border: const OutlineInputBorder(),
         labelText: label,
         labelStyle: TextStyle(color: theme.secondaryColor),
-        enabledBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: theme.tertiaryColor)),
-        focusedBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: theme.tertiaryColor, width: 1.3)),
       ),
       cursorColor: theme.secondaryColor,
       style:

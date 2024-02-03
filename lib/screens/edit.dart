@@ -46,6 +46,7 @@ class _EditCardState extends State<EditCard> {
       child: Scaffold(
         backgroundColor: theme.primaryColor,
         appBar: AppBar(
+          foregroundColor: theme.secondaryColor,
           backgroundColor: theme.primaryColor,
           centerTitle: true,
           title: Text(
@@ -81,8 +82,10 @@ class _EditCardState extends State<EditCard> {
                     onChanged: (text) {
                       description = text;
                     },
+                    maxLines: 10,
                     initialValue: widget.lister[widget.index].description,
                     decoration: InputDecoration(
+                      alignLabelWithHint: true,
                       border: const OutlineInputBorder(),
                       labelText: "Description",
                       labelStyle: TextStyle(color: theme.secondaryColor),
@@ -104,11 +107,9 @@ class _EditCardState extends State<EditCard> {
                         child: Container(
                           padding: const EdgeInsets.all(12),
                           decoration: BoxDecoration(
-                              color: chips[0] ? Colors.redAccent : null,
+                              color: chips[0] ? theme.todo : null,
                               border: Border.all(
-                                  color: chips[0]
-                                      ? Colors.white
-                                      : Colors.redAccent),
+                                  color: chips[0] ? Colors.white : theme.todo),
                               borderRadius: BorderRadius.circular(16)),
                           child: const Text(
                             "To Do",
@@ -126,10 +127,11 @@ class _EditCardState extends State<EditCard> {
                         child: Container(
                           padding: const EdgeInsets.all(12),
                           decoration: BoxDecoration(
-                              color: chips[1] ? Colors.orange : null,
+                              color: chips[1] ? theme.inProgress : null,
                               border: Border.all(
-                                  color:
-                                      chips[1] ? Colors.white : Colors.orange),
+                                  color: chips[1]
+                                      ? Colors.white
+                                      : theme.inProgress),
                               borderRadius: BorderRadius.circular(16)),
                           child: const Text(
                             "In Progress",
@@ -147,10 +149,9 @@ class _EditCardState extends State<EditCard> {
                         child: Container(
                           padding: const EdgeInsets.all(12),
                           decoration: BoxDecoration(
-                              color: chips[2] ? Colors.green : null,
+                              color: chips[2] ? theme.done : null,
                               border: Border.all(
-                                  color:
-                                      chips[2] ? Colors.white : Colors.green),
+                                  color: chips[2] ? Colors.white : theme.done),
                               borderRadius: BorderRadius.circular(16)),
                           child: const Text(
                             "Done",
@@ -161,6 +162,7 @@ class _EditCardState extends State<EditCard> {
                     ],
                   ),
                   Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       buildAddButton(),
                       buildDeleteButton(),
@@ -209,12 +211,12 @@ class _EditCardState extends State<EditCard> {
             )),
         child: const Wrap(
           children: [
-            Icon(Icons.sell),
+            Icon(Icons.edit),
             SizedBox(
               width: 10.0,
             ),
             Text(
-              "Add",
+              "Edit",
               style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
             )
           ],
@@ -247,14 +249,14 @@ class _EditCardState extends State<EditCard> {
           deleteTodo();
         },
         style: ElevatedButton.styleFrom(
-            backgroundColor: Colors.redAccent.withOpacity(0.8),
+            backgroundColor: theme.todo.withOpacity(0.8),
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(15),
             )),
         child: const Wrap(
           children: [
-            Icon(Icons.sell),
+            Icon(Icons.delete),
             SizedBox(
               width: 10.0,
             ),
