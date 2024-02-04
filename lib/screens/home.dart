@@ -33,6 +33,9 @@ class _HomeState extends State<Home> {
   late double height;
   late double width;
   late CollectionReference todos;
+  bool openSearch = false;
+  String search = "";
+  int filter = 0;
 
   @override
   void initState() {
@@ -69,6 +72,25 @@ class _HomeState extends State<Home> {
         ),
         centerTitle: true,
         actions: [
+          // IconButton(
+          //     color: theme.secondaryColor,
+          //     onPressed: () {
+          //       setState(() {
+          //         setState(() {
+          //           filter += 1;
+          //         });
+          //         print(filter);
+          //       });
+          //     },
+          //     icon: const Icon(Icons.filter_alt_rounded)),
+          IconButton(
+              color: theme.secondaryColor,
+              onPressed: () {
+                setState(() {
+                  openSearch = !openSearch;
+                });
+              },
+              icon: const Icon(Icons.search_rounded)),
           IconButton(
               color: theme.secondaryColor,
               onPressed: () {
@@ -81,7 +103,7 @@ class _HomeState extends State<Home> {
                   '/',
                 );
               },
-              icon: const Icon(Icons.logout_rounded))
+              icon: const Icon(Icons.logout_rounded)),
         ],
       ),
       floatingActionButton: FloatingActionButton(
@@ -101,14 +123,30 @@ class _HomeState extends State<Home> {
       body: SizedBox(
         height: height,
         width: width,
-        child: ListView.builder(
-          itemCount: lister.length,
-          itemBuilder: (context, index) {
-            //retrieve data from the fetched list from firebase, and create cards
-            ToDo todo = ToDo(lister[index].title, lister[index].description,
-                lister[index].id, lister[index].status);
-            return buildCard(todo, index);
-          },
+        child: Column(
+          children: [
+            openSearch ? searchTF() : const SizedBox(),
+            Expanded(
+              child: ListView.builder(
+                itemCount: lister.length,
+                itemBuilder: (context, index) {
+                  //retrieve data from the fetched list from firebase, and create cards
+
+                  ToDo todo = ToDo(
+                      lister[index].title,
+                      lister[index].description,
+                      lister[index].id,
+                      lister[index].status);
+                  if (search.isEmpty ||
+                      todo.title.contains(search) ||
+                      todo.description.contains(search)) {
+                    return buildCard(todo, index);
+                  } else
+                    return const SizedBox();
+                },
+              ),
+            ),
+          ],
         ),
       ),
     );
@@ -196,6 +234,37 @@ class _HomeState extends State<Home> {
         );
         setState(() {});
       },
+    );
+  }
+
+  searchTF() {
+    return Center(
+      child: SizedBox(
+        width: width * 0.88,
+        child: TextField(
+          style: TextStyle(color: Colors.white),
+          cursorColor: theme.secondaryColor,
+          decoration: InputDecoration(
+              suffixIcon: IconButton(
+                  color: theme.secondaryColor,
+                  onPressed: () {
+                    setState(() {
+                      search = "";
+                      openSearch = !openSearch;
+                    });
+                  },
+                  icon: const Icon(Icons.close_rounded)),
+              enabledBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(color: Colors.white)),
+              focusedBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(color: Colors.white))),
+          onChanged: (value) {
+            setState(() {
+              search = value.trim();
+            });
+          },
+        ),
+      ),
     );
   }
 }
