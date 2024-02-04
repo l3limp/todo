@@ -1,5 +1,3 @@
-
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -18,6 +16,7 @@ class Home extends StatefulWidget {
 }
 
 List<ToDo> lister = [];
+
 List images = [
   'notes',
   'coffee-cup',
@@ -38,6 +37,7 @@ class _HomeState extends State<Home> {
   @override
   void initState() {
     super.initState();
+    //festching the todos for the logged in user from firebase
     FirebaseFirestore.instance
         .collection(auth.currentUser!.uid)
         .get()
@@ -72,6 +72,7 @@ class _HomeState extends State<Home> {
           IconButton(
               color: theme.secondaryColor,
               onPressed: () {
+                //flow to sign out
                 auth.signOut();
                 GoogleSignIn().signOut();
                 lister.clear();
@@ -86,6 +87,7 @@ class _HomeState extends State<Home> {
       floatingActionButton: FloatingActionButton(
           child: const Icon(Icons.add),
           onPressed: () async {
+            //directing to the add todo page
             await Navigator.push(
               context,
               MaterialPageRoute<void>(
@@ -102,6 +104,7 @@ class _HomeState extends State<Home> {
         child: ListView.builder(
           itemCount: lister.length,
           itemBuilder: (context, index) {
+            //retrieve data from the fetched list from firebase, and create cards
             ToDo todo = ToDo(lister[index].title, lister[index].description,
                 lister[index].id, lister[index].status);
             return buildCard(todo, index);
@@ -113,7 +116,6 @@ class _HomeState extends State<Home> {
 
   buildCard(ToDo todo, int index) {
     return GestureDetector(
-      
       child: Center(
         child: Container(
           margin: const EdgeInsets.fromLTRB(20, 15, 20, 5),
@@ -157,8 +159,6 @@ class _HomeState extends State<Home> {
                               style: const TextStyle(
                                 fontSize: 20.0,
                                 color: Colors.black,
-                                // letterSpacing: 1,
-    
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
@@ -184,6 +184,7 @@ class _HomeState extends State<Home> {
         ),
       ),
       onTap: () async {
+        //open the edit todo page on tapping a card
         await Navigator.push(
           context,
           MaterialPageRoute<void>(

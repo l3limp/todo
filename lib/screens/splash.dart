@@ -109,6 +109,7 @@ class _InitialisationState extends State<Initialisation>
                                     builder: (context, snapshot) {
                                       if (snapshot.hasData) {
                                         if (auth.currentUser == null) {
+                                          //if no user is logged in, prompt user to log in
                                           return ElevatedButton(
                                               onPressed: () async {
                                                 final GoogleSignInAccount?
@@ -144,6 +145,7 @@ class _InitialisationState extends State<Initialisation>
                                               child:
                                                   const Text("Let's do it!"));
                                         } else {
+                                          //if a user is already logged in, direct them to the home screen
                                           return ElevatedButton(
                                               onPressed: () {
                                                 Navigator.pushReplacementNamed(

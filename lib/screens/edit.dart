@@ -30,6 +30,7 @@ class _EditCardState extends State<EditCard> {
   @override
   void initState() {
     super.initState();
+    // populate textfields with existing data
     title = widget.lister[widget.index].title;
     description = widget.lister[widget.index].description;
     status = widget.lister[widget.index].status;
@@ -184,6 +185,7 @@ class _EditCardState extends State<EditCard> {
   }
 
   Future<void> editTodo() {
+    // push changes to firebase on editing a todo
     return FirebaseFirestore.instance
         .collection(auth.currentUser!.uid)
         .doc(id)
@@ -243,6 +245,7 @@ class _EditCardState extends State<EditCard> {
   }
 
   Future<void> deleteTodo() {
+    // push changes to firebase on deleting a todo
     return FirebaseFirestore.instance
         .collection(auth.currentUser!.uid)
         .doc(id)

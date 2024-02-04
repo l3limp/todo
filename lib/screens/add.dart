@@ -165,6 +165,7 @@ class _AddCardState extends State<AddCard> {
   }
 
   Future<void> addTodo() {
+    // push changes to firebase on adding a todo
     return FirebaseFirestore.instance.collection(auth.currentUser!.uid).add({
       'title': title,
       'description': description,
