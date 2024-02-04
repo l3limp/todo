@@ -27,6 +27,7 @@ List images = [
   'spaceship',
   'plant'
 ];
+List statuses = ['To Do', 'In Progress', 'Done'];
 
 class _HomeState extends State<Home> {
   OurTheme theme = OurTheme();
@@ -72,20 +73,22 @@ class _HomeState extends State<Home> {
         ),
         centerTitle: true,
         actions: [
-          // IconButton(
-          //     color: theme.secondaryColor,
-          //     onPressed: () {
-          //       setState(() {
-          //         setState(() {
-          //           filter += 1;
-          //         });
-          //         print(filter);
-          //       });
-          //     },
-          //     icon: const Icon(Icons.filter_alt_rounded)),
           IconButton(
               color: theme.secondaryColor,
               onPressed: () {
+                setState(() {
+                  //filter
+                  setState(() {
+                    filter += 1;
+                  });
+                  print(filter);
+                });
+              },
+              icon: const Icon(Icons.filter_alt_rounded)),
+          IconButton(
+              color: theme.secondaryColor,
+              onPressed: () {
+                //opening search
                 setState(() {
                   openSearch = !openSearch;
                 });
@@ -137,10 +140,19 @@ class _HomeState extends State<Home> {
                       lister[index].description,
                       lister[index].id,
                       lister[index].status);
+
+                  //search
                   if (search.isEmpty ||
                       todo.title.contains(search) ||
                       todo.description.contains(search)) {
-                    return buildCard(todo, index);
+                    //filter
+                    if (filter % 4 == 0) {
+                      return buildCard(todo, index);
+                    } else if (todo.status == statuses[(filter % 4) - 1]) {
+                      return buildCard(todo, index);
+                    } else {
+                      return const SizedBox();
+                    }
                   } else
                     return const SizedBox();
                 },
