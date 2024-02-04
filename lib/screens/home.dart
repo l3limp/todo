@@ -1,4 +1,4 @@
-import 'dart:math';
+
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -6,7 +6,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:todo/model/todo.dart';
 import 'package:todo/screens/add.dart';
 import 'package:todo/screens/edit.dart';
-import 'package:todo/screens/temp.dart';
+import 'package:todo/screens/splash.dart';
 
 import '../theme.dart';
 

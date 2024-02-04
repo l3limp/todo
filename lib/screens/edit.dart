@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:todo/model/todo.dart';
-import 'package:todo/screens/temp.dart';
+import 'package:todo/screens/splash.dart';
 
 import '../theme.dart';
 
@@ -26,8 +26,6 @@ class _EditCardState extends State<EditCard> {
   late String title;
   late String description;
   late List chips;
-
-  // late CollectionReference books;
 
   @override
   void initState() {

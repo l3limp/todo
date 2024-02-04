@@ -111,19 +111,16 @@ class _InitialisationState extends State<Initialisation>
                                         if (auth.currentUser == null) {
                                           return ElevatedButton(
                                               onPressed: () async {
-                                                // Trigger the authentication flow
                                                 final GoogleSignInAccount?
                                                     googleUser =
                                                     await GoogleSignIn()
                                                         .signIn();
 
-                                                // Obtain the auth details from the request
                                                 final GoogleSignInAuthentication?
                                                     googleAuth =
                                                     await googleUser
                                                         ?.authentication;
 
-                                                // Create a new credential
                                                 final credential =
                                                     GoogleAuthProvider
                                                         .credential(
@@ -132,7 +129,6 @@ class _InitialisationState extends State<Initialisation>
                                                   idToken: googleAuth?.idToken,
                                                 );
 
-                                                // Once signed in, return the UserCredential
                                                 await FirebaseAuth.instance
                                                     .signInWithCredential(
                                                         credential)
