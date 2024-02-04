@@ -6,7 +6,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:todo/model/todo.dart';
 import 'package:todo/screens/add.dart';
 import 'package:todo/screens/edit.dart';
-import 'package:todo/temp.dart';
+import 'package:todo/screens/temp.dart';
 
 import '../theme.dart';
 
@@ -77,7 +77,7 @@ class _HomeState extends State<Home> {
                 lister.clear();
                 Navigator.popAndPushNamed(
                   context,
-                  '/login',
+                  '/',
                 );
               },
               icon: const Icon(Icons.logout_rounded))
@@ -112,7 +112,8 @@ class _HomeState extends State<Home> {
   }
 
   buildCard(ToDo todo, int index) {
-    return InkWell(
+    return GestureDetector(
+      
       child: Center(
         child: Container(
           margin: const EdgeInsets.fromLTRB(20, 15, 20, 5),
@@ -153,11 +154,11 @@ class _HomeState extends State<Home> {
                               todo.title.length > 40
                                   ? '${todo.title.substring(0, 40)}...'
                                   : todo.title,
-                              style: TextStyle(
+                              style: const TextStyle(
                                 fontSize: 20.0,
                                 color: Colors.black,
                                 // letterSpacing: 1,
-                                fontFamily: theme.font,
+    
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
@@ -169,7 +170,6 @@ class _HomeState extends State<Home> {
                               style: TextStyle(
                                   fontSize: 12.0,
                                   color: Colors.black,
-                                  fontFamily: theme.font,
                                   fontWeight: FontWeight.w100),
                             ),
                           ]),

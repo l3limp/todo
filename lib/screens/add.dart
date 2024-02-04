@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:todo/model/todo.dart';
-import 'package:todo/temp.dart';
+import 'package:todo/screens/temp.dart';
 
 import '../theme.dart';
 
@@ -56,7 +56,7 @@ class _AddCardState extends State<AddCard> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      InkWell(
+                      GestureDetector(
                         onTap: () {
                           setState(() {
                             chips = [true, false, false];
@@ -76,7 +76,7 @@ class _AddCardState extends State<AddCard> {
                           ),
                         ),
                       ),
-                      InkWell(
+                      GestureDetector(
                         onTap: () {
                           setState(() {
                             chips = [false, true, false];
@@ -98,7 +98,7 @@ class _AddCardState extends State<AddCard> {
                           ),
                         ),
                       ),
-                      InkWell(
+                      GestureDetector(
                         onTap: () {
                           setState(() {
                             chips = [false, false, true];
@@ -131,7 +131,7 @@ class _AddCardState extends State<AddCard> {
   }
 
   Widget buildTextFormField(
-     final String label, String fillIn, TextInputType inputType) {
+      final String label, String fillIn, TextInputType inputType) {
     return TextFormField(
       onChanged: (text) {
         switch (fillIn) {
@@ -147,14 +147,14 @@ class _AddCardState extends State<AddCard> {
         }
       },
       maxLines: fillIn == 'description' ? 10 : null,
-       cursorColor: Colors.white,
-                    decoration:  InputDecoration(
-                      alignLabelWithHint: true,
-                      border: const OutlineInputBorder(),
-                      enabledBorder: const OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.white)),
-                      focusedBorder: const OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.white)),
+      cursorColor: Colors.white,
+      decoration: InputDecoration(
+        alignLabelWithHint: true,
+        border: const OutlineInputBorder(),
+        enabledBorder: const OutlineInputBorder(
+            borderSide: BorderSide(color: Colors.white)),
+        focusedBorder: const OutlineInputBorder(
+            borderSide: BorderSide(color: Colors.white)),
         labelText: label,
         labelStyle: TextStyle(color: theme.secondaryColor),
       ),
@@ -188,7 +188,14 @@ class _AddCardState extends State<AddCard> {
     return Center(
       child: ElevatedButton(
         onPressed: () {
-          addTodo();
+          title = title.trim();
+          description = description.trim();
+          if (title.isNotEmpty) {
+            addTodo();
+          } else {
+            const snackBar = SnackBar(content: Text("Title cannot be empty"));
+            ScaffoldMessenger.of(context).showSnackBar(snackBar);
+          }
         },
         style: ElevatedButton.styleFrom(
             backgroundColor: theme.secondaryColor.withOpacity(0.8),
@@ -198,14 +205,15 @@ class _AddCardState extends State<AddCard> {
             )),
         child: const Wrap(
           children: [
-            Icon(Icons.sell,
-                  color: Colors.white),
+            Icon(Icons.sell, color: Colors.white),
             SizedBox(
               width: 10.0,
             ),
             Text(
               "Add",
-              style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold,
+              style: TextStyle(
+                  fontSize: 18.0,
+                  fontWeight: FontWeight.bold,
                   color: Colors.white),
             )
           ],

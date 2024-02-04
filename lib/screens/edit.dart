@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:todo/model/todo.dart';
-import 'package:todo/temp.dart';
+import 'package:todo/screens/temp.dart';
 
 import '../theme.dart';
 
@@ -105,7 +105,7 @@ class _EditCardState extends State<EditCard> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      InkWell(
+                      GestureDetector(
                         onTap: () {
                           setState(() {
                             chips = [true, false, false];
@@ -125,7 +125,7 @@ class _EditCardState extends State<EditCard> {
                           ),
                         ),
                       ),
-                      InkWell(
+                      GestureDetector(
                         onTap: () {
                           setState(() {
                             chips = [false, true, false];
@@ -147,7 +147,7 @@ class _EditCardState extends State<EditCard> {
                           ),
                         ),
                       ),
-                      InkWell(
+                      GestureDetector(
                         onTap: () {
                           setState(() {
                             chips = [false, false, true];
@@ -210,7 +210,14 @@ class _EditCardState extends State<EditCard> {
     return Center(
       child: ElevatedButton(
         onPressed: () {
-          editTodo();
+          title = title.trim();
+          description = description.trim();
+          if (title.isNotEmpty) {
+            editTodo();
+          } else {
+            const snackBar = SnackBar(content: Text("Title cannot be empty"));
+            ScaffoldMessenger.of(context).showSnackBar(snackBar);
+          }
         },
         style: ElevatedButton.styleFrom(
             backgroundColor: theme.secondaryColor,
